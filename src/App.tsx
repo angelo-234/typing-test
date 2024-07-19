@@ -1,26 +1,28 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import Header from './components/Header';
+import Settings from './components/Settings';
+import TypingTest from './components/TypingTest';
+import Footer from './components/Footer';
 
-function App() {
+const App: React.FC = () => {
+  const [mode, setMode] = useState<'time' | 'words'>('time');
+  const [duration, setDuration] = useState(30);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="min-h-screen bg-gray-800 text-gray-300 flex flex-col">
+      <Header />
+      <main className="flex-grow flex flex-col items-center justify-center">
+        <Settings
+          mode={mode}
+          duration={duration}
+          onModeChange={setMode}
+          onDurationChange={setDuration}
+        />
+        <TypingTest mode={mode} duration={duration} />
+      </main>
+      <Footer />
     </div>
   );
-}
+};
 
 export default App;
