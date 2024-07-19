@@ -10,7 +10,7 @@ interface WordProps {
 
 const Word: React.FC<WordProps> = ({ word, isActive, isCompleted, typedText, cursorPosition }) => {
   return (
-    <span className={`mr-2 mb-2 inline-block ${isActive ? 'text-text' : ''} ${isCompleted ? 'text-text-inactive' : ''}`}>
+    <span className={`mr-2 mb-2 inline-block whitespace-nowrap ${isActive ? 'text-text' : ''} ${isCompleted ? 'text-text-inactive' : ''}`}>
       {word.split('').map((char, index) => {
         let charClass = '';
         if (isActive && index < typedText.length) {
