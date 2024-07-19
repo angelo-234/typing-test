@@ -16,6 +16,7 @@ export const useTypingTest = (mode: 'time' | 'words', duration: number) => {
   const [totalChars, setTotalChars] = useState(0);
   const [typedText, setTypedText] = useState('');
   const [wordsLeft, setWordsLeft] = useState(mode === 'words' ? duration : 0);
+  const [timerStarted, setTimerStarted] = useState(false);
 
   const startTest = useCallback(() => {
     const newText = generateText(mode === 'words' ? duration : 100);
@@ -32,6 +33,7 @@ export const useTypingTest = (mode: 'time' | 'words', duration: number) => {
     setTotalChars(0);
     setTypedText('');
     setWordsLeft(mode === 'words' ? duration : 0);
+    setTimerStarted(false);
   }, [mode, duration]);
 
   const restartTest = () => {
@@ -46,6 +48,10 @@ export const useTypingTest = (mode: 'time' | 'words', duration: number) => {
     if (!startTime) {
       setStartTime(Date.now());
     }
+    if (!timerStarted) {
+        setTimerStarted(true);
+        setStartTime(Date.now());
+      }
     setInputValue(value);
     setTypedText(value);
     setCurrentCharIndex(value.length);
@@ -56,45 +62,53 @@ export const useTypingTest = (mode: 'time' | 'words', duration: number) => {
     }
   };
   
-  // Update the handleInputSubmit function
-  const handleInputSubmit = () => {
-    const currentWord = text[currentWordIndex];
-    if (inputValue.trim() === currentWord) {
-      setCurrentWordIndex((prev) => prev + 1);
-      setCurrentCharIndex(0);
-      setInputValue('');
-      setTypedText('');
-      setWordCount((prev) => prev + 1);
-      if (mode === 'words') {
-        setWordsLeft((prev) => prev - 1);
-      }
-    }
-  };
+    const handleInputSubmit = () => {
+        const currentWord = text[currentWordIndex];
+        if (inputValue.trim() === currentWord) {
+        const newWordIndex = currentWordIndex + 1;
+        setCurrentWordIndex(newWordIndex);
+        setCurrentCharIndex(0);
+        setInputValue('');
+        setTypedText('');
+        setWordCount((prev) => prev + 1);
+        if (mode === 'words') {
+            const newWordsLeft = wordsLeft - 1;
+            setWordsLeft(newWordsLeft);
+            if (newWordsLeft <= 0 || newWordIndex >= text.length) {
+            setIsFinished(true);
+            setEndTime(Date.now());
+            }
+        } else if (newWordIndex >= text.length) {
+            setIsFinished(true);
+            setEndTime(Date.now());
+        }
+        }
+    };
 
     useEffect(() => {
-        if (startTime && !isFinished) {
-        const timer = setInterval(() => {
+        if (timerStarted && !isFinished) {
+          const timer = setInterval(() => {
             if (mode === 'time') {
-            setTimeLeft((prev) => {
+              setTimeLeft((prev) => {
                 if (prev <= 0) {
-                clearInterval(timer);
-                setIsFinished(true);
-                setEndTime(Date.now());
-                return 0;
+                  clearInterval(timer);
+                  setIsFinished(true);
+                  setEndTime(Date.now());
+                  return 0;
                 }
                 return prev - 1;
-            });
+              });
             } else if (mode === 'words') {
-            if (wordsLeft <= 0) {
+              if (wordsLeft <= 0) {
                 clearInterval(timer);
                 setIsFinished(true);
                 setEndTime(Date.now());
+              }
             }
-            }
-        }, 1000);
-        return () => clearInterval(timer);
+          }, 1000);
+          return () => clearInterval(timer);
         }
-    }, [startTime, isFinished, mode, wordsLeft]);
+      }, [timerStarted, isFinished, mode, wordsLeft]);
 
   const wpm = calculateWPM(wordCount, startTime, endTime);
   const accuracy = calculateAccuracy(correctChars, totalChars);
@@ -116,5 +130,6 @@ export const useTypingTest = (mode: 'time' | 'words', duration: number) => {
     nextTest,
     typedText,
     wordsLeft,
+    timerStarted,
   };
 };

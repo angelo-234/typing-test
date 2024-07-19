@@ -10,8 +10,7 @@ interface TypingTestProps {
 }
 
 const TypingTest: React.FC<TypingTestProps> = ({ mode, duration }) => {
-  const [testStarted, setTestStarted] = useState(false);
-  const textDisplayRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const {
     text,
@@ -30,47 +29,40 @@ const TypingTest: React.FC<TypingTestProps> = ({ mode, duration }) => {
     nextTest,
     typedText,
     wordsLeft,
+    timerStarted,
   } = useTypingTest(mode, duration);
 
   useEffect(() => {
-    startTest(); // Generate initial text
+    startTest();
   }, [mode, duration]);
 
-  const handleTypingStart = () => {
-    if (!testStarted) {
-      setTestStarted(true);
+  const handleAreaClick = () => {
+    if (inputRef.current) {
+      inputRef.current.focus();
     }
   };
 
   return (
-    <div className="w-full max-w-3xl mx-auto">
-      <div
-        ref={textDisplayRef}
-        className="cursor-text"
-        tabIndex={0}
-      >
-        <TextDisplay
-          text={text}
-          currentWordIndex={currentWordIndex}
-          currentCharIndex={currentCharIndex}
-          typedText={typedText}
-        />
-      </div>
+    <div className="w-full max-w-3xl mx-auto cursor-default" onClick={handleAreaClick}>
+      <TextDisplay
+        text={text}
+        currentWordIndex={currentWordIndex}
+        currentCharIndex={currentCharIndex}
+        typedText={typedText}
+      />
       {!isFinished && (
         <Timer
           mode={mode}
           duration={duration}
           timeLeft={timeLeft}
           wordsLeft={wordsLeft}
-          testStarted={testStarted}
+          testStarted={timerStarted}
         />
       )}
       <TypingInput
+        ref={inputRef}
         value={inputValue}
-        onChange={(value) => {
-          handleTypingStart();
-          handleInputChange(value);
-        }}
+        onChange={handleInputChange}
         onSubmit={handleInputSubmit}
         disabled={isFinished}
       />
