@@ -61,22 +61,18 @@ const TypingTest: React.FC<TypingTestProps> = ({ mode, duration, onModeChange, o
         setShowSettings(true);
     };
 
+    const handleRestart = () => {
+        restartTest();
+        setShowSettings(true);
+    };
+
+    const handleNext = () => {
+        nextTest()
+        setShowSettings(true);
+    };
+
     return (
         <div className="w-full max-w-4xl mx-auto cursor-default" onClick={handleAreaClick}>
-            <div className="flex justify-between items-center mb-4">
-                <button
-                    onClick={() => setShowSidebar(!showSidebar)}
-                    className="bg-primary text-background px-4 py-2 rounded"
-                >
-                    Settings
-                </button>
-                <button
-                    onClick={handleReset}
-                    className="bg-primary text-background px-4 py-2 rounded"
-                >
-                    Reset
-                </button>
-            </div>
             {showSettings && (
                 <Settings
                     mode={mode}
@@ -92,13 +88,22 @@ const TypingTest: React.FC<TypingTestProps> = ({ mode, duration, onModeChange, o
                 typedText={typedText}
             />
             {!isFinished && (
-                <Timer
-                    mode={mode}
-                    duration={duration}
-                    timeLeft={timeLeft}
-                    wordsLeft={wordsLeft}
-                    testStarted={timerStarted}
-                />
+                <div className="flex justify-between items-center mb-4">
+                    <Timer
+                        mode={mode}
+                        duration={duration}
+                        timeLeft={timeLeft}
+                        wordsLeft={wordsLeft}
+                        testStarted={timerStarted}
+                    />
+
+                    <button
+                        onClick={handleReset}
+                        className="bg-primary text-background px-4 py-2 rounded"
+                    >
+                        Reset
+                    </button>
+                </div>
             )}
             <TypingInput
                 ref={inputRef}
@@ -110,13 +115,13 @@ const TypingTest: React.FC<TypingTestProps> = ({ mode, duration, onModeChange, o
             {isFinished && (
                 <div className="mt-4 flex justify-center space-x-4">
                     <button
-                        onClick={restartTest}
+                        onClick={handleRestart}
                         className="bg-primary text-background px-4 py-2 rounded"
                     >
                         Restart
                     </button>
                     <button
-                        onClick={nextTest}
+                        onClick={handleNext}
                         className="bg-primary text-background px-4 py-2 rounded"
                     >
                         Next Test
