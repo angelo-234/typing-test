@@ -19,7 +19,7 @@ export const useTypingTest = (mode: 'time' | 'words', duration: number) => {
   const [timerStarted, setTimerStarted] = useState(false);
 
   const startTest = useCallback(() => {
-    const newText = generateText(mode === 'words' ? duration : 100);
+    const newText = generateText(mode === 'words' ? duration : 45);
     setText(newText);
     setCurrentWordIndex(0);
     setCurrentCharIndex(0);

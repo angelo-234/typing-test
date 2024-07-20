@@ -10,6 +10,11 @@ const App: React.FC = () => {
   const [primaryColor, setPrimaryColor] = useState('#637AB7');
   const [showSidebar, setShowSidebar] = useState(false);
 
+  useEffect(() => {
+    // Set the initial color when the app loads
+    document.documentElement.style.setProperty('--primary-color', primaryColor);
+  }, []); // Empty dependency array means this runs once on mount
+  
   const handleColorChange = (color: string) => {
     setPrimaryColor(color);
     document.documentElement.style.setProperty('--primary-color', color);
