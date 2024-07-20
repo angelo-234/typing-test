@@ -7,6 +7,12 @@ import Footer from './components/Footer';
 const App: React.FC = () => {
   const [mode, setMode] = useState<'time' | 'words'>('time');
   const [duration, setDuration] = useState(30);
+  const [primaryColor, setPrimaryColor] = useState('#637AB7');
+
+  const handleColorChange = (color: string) => {
+    setPrimaryColor(color);
+    document.documentElement.style.setProperty('--primary-color', color);
+  };
 
   useEffect(() => {
     if (mode === 'words' && duration === 30) {
@@ -20,13 +26,13 @@ const App: React.FC = () => {
     <div className="min-h-screen bg-gray-800 text-gray-300 flex flex-col">
       <Header />
       <main className="flex-grow flex flex-col items-center justify-center">
-        <Settings
-          mode={mode}
-          duration={duration}
-          onModeChange={setMode}
-          onDurationChange={setDuration}
-        />
-        <TypingTest mode={mode} duration={duration} />
+        <TypingTest
+        mode={mode}
+        duration={duration}
+        onModeChange={setMode}
+        onDurationChange={setDuration}
+        primaryColor={primaryColor}
+        onColorChange={handleColorChange} />
       </main>
       <Footer />
     </div>

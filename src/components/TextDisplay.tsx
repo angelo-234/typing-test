@@ -10,7 +10,7 @@ interface TextDisplayProps {
 
 const TextDisplay: React.FC<TextDisplayProps> = ({ text, currentWordIndex, currentCharIndex, typedText }) => {
   return (
-    <div className="text-2xl mb-8 text-center relative">
+    <div className="text-3xl mb-12 text-center relative h-40 overflow-y-auto">
       <div className="flex flex-wrap justify-center">
         {text.map((word, index) => (
           <Word
