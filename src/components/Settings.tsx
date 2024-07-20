@@ -5,11 +5,12 @@ interface SettingsProps {
   duration: number;
   onModeChange: (mode: 'time' | 'words') => void;
   onDurationChange: (duration: number) => void;
+  className?: string;
 }
 
-const Settings: React.FC<SettingsProps> = ({ mode, duration, onModeChange, onDurationChange }) => {
+const Settings: React.FC<SettingsProps> = ({ mode, duration, onModeChange, onDurationChange, className = "" }) => {
   return (
-    <div className="mb-8 flex justify-center items-center space-x-4 text-xl">
+    <div className={`mb-12 flex justify-center items-center space-x-4 text-xl ${className}`}>
       <div className="flex space-x-4">
         <button
           onClick={() => onModeChange('time')}

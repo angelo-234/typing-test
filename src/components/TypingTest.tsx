@@ -13,12 +13,13 @@ interface TypingTestProps {
     onDurationChange: (duration: number) => void;
     primaryColor: string;
     onColorChange: (color: string) => void;
+    showSidebar: boolean;
+    setShowSidebar: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const TypingTest: React.FC<TypingTestProps> = ({ mode, duration, onModeChange, onDurationChange, primaryColor, onColorChange }) => {
+const TypingTest: React.FC<TypingTestProps> = ({ mode, duration, onModeChange, onDurationChange, primaryColor, onColorChange, showSidebar, setShowSidebar }) => {
     const inputRef = useRef<HTMLInputElement>(null);
     const [showSettings, setShowSettings] = useState(true);
-    const [showSidebar, setShowSidebar] = useState(false);
 
     const {
         text,
@@ -73,19 +74,25 @@ const TypingTest: React.FC<TypingTestProps> = ({ mode, duration, onModeChange, o
 
     return (
         <div className="w-full max-w-4xl mx-auto cursor-default" onClick={handleAreaClick}>
-            {showSettings && (
-                <Settings
-                    mode={mode}
-                    duration={duration}
-                    onModeChange={onModeChange}
-                    onDurationChange={onDurationChange}
-                />
-            )}
+            <Settings
+                mode={mode}
+                duration={duration}
+                onModeChange={onModeChange}
+                onDurationChange={onDurationChange}
+                className={`transition-opacity duration-300 ${showSettings ? 'opacity-100' : 'opacity-0'}`}
+            />
             <TextDisplay
                 text={text}
                 currentWordIndex={currentWordIndex}
                 currentCharIndex={currentCharIndex}
                 typedText={typedText}
+            />
+            <TypingInput
+                ref={inputRef}
+                value={inputValue}
+                onChange={handleInputChange}
+                onSubmit={handleInputSubmit}
+                disabled={isFinished}
             />
             {!isFinished && (
                 <div className="flex justify-between items-center mb-4">
@@ -105,13 +112,6 @@ const TypingTest: React.FC<TypingTestProps> = ({ mode, duration, onModeChange, o
                     </button>
                 </div>
             )}
-            <TypingInput
-                ref={inputRef}
-                value={inputValue}
-                onChange={handleInputChange}
-                onSubmit={handleInputSubmit}
-                disabled={isFinished}
-            />
             {isFinished && (
                 <div className="mt-4 flex justify-center space-x-4">
                     <button
