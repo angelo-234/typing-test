@@ -16,7 +16,7 @@ const Timer: React.FC<TimerProps> = ({ mode, duration, timeLeft, wordsLeft, test
   };
 
   return (
-    <div className="text-center text-3xl mb-4" style={{ color: 'var(--primary-color)' }}>
+    <div className="text-center text-3xl mb-4 font-bold" style={{ color: 'var(--primary-color)' }}>
       {mode === 'time' ? (
         <span>{testStarted ? formatTime(timeLeft) : formatTime(duration)}</span>
       ) : (

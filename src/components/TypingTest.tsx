@@ -106,32 +106,32 @@ const TypingTest: React.FC<TypingTestProps> = ({ mode, duration, onModeChange, o
 
                     <button
                         onClick={handleReset}
-                        className="bg-primary text-background px-4 py-2 rounded"
+                        className="bg-primary text-background px-4 py-2 rounded font-bold"
                     >
                         Reset
                     </button>
                 </div>
             )}
             {isFinished && (
-                <div className="mt-4 flex justify-center space-x-4">
-                    <button
-                        onClick={handleRestart}
-                        className="bg-primary text-background px-4 py-2 rounded"
-                    >
-                        Restart
-                    </button>
-                    <button
-                        onClick={handleNext}
-                        className="bg-primary text-background px-4 py-2 rounded"
-                    >
-                        Next Test
-                    </button>
-                </div>
-            )}
-            {isFinished && (
-                <div className="mt-4 text-center">
-                    <p className="text-xl">WPM: {Math.round(wpm)}</p>
-                    <p className="text-xl">Accuracy: {accuracy.toFixed(2)}%</p>
+                <div className="mt-4 flex flex-col items-center space-y-12">
+                    <div className="flex justify-center space-x-4">
+                        <button
+                            onClick={handleRestart}
+                            className="bg-primary text-background px-4 py-2 rounded"
+                        >
+                            Restart
+                        </button>
+                        <button
+                            onClick={handleNext}
+                            className="bg-primary text-background px-4 py-2 rounded"
+                        >
+                            Next Test
+                        </button>
+                    </div>
+                    <div className="text-center">
+                        <p className="text-3xl font-bold mb-2">WPM: {Math.round(wpm)}</p>
+                        <p className="text-3xl font-bold">Accuracy: {accuracy.toFixed(2)}%</p>
+                    </div>
                 </div>
             )}
             <Sidebar

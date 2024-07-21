@@ -10,7 +10,7 @@ interface SettingsProps {
 
 const Settings: React.FC<SettingsProps> = ({ mode, duration, onModeChange, onDurationChange, className = "" }) => {
   return (
-    <div className={`mb-12 flex justify-center items-center space-x-4 text-xl ${className}`}>
+    <div className={`mb-12 flex justify-center items-center space-x-4 text-xl font-bold ${className}`}>
       <div className="flex space-x-4">
         <button
           onClick={() => onModeChange('time')}
