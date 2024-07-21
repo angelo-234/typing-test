@@ -74,28 +74,29 @@ const TypingTest: React.FC<TypingTestProps> = ({ mode, duration, onModeChange, o
 
     return (
         <div className="w-full max-w-4xl mx-auto cursor-default" onClick={handleAreaClick}>
-            <Settings
-                mode={mode}
-                duration={duration}
-                onModeChange={onModeChange}
-                onDurationChange={onDurationChange}
-                className={`transition-opacity duration-300 ${showSettings ? 'opacity-100' : 'opacity-0'}`}
-            />
-            <TextDisplay
-                text={text}
-                currentWordIndex={currentWordIndex}
-                currentCharIndex={currentCharIndex}
-                typedText={typedText}
-            />
-            <TypingInput
-                ref={inputRef}
-                value={inputValue}
-                onChange={handleInputChange}
-                onSubmit={handleInputSubmit}
-                disabled={isFinished}
-            />
-            {!isFinished && (
-                <div className="flex justify-between items-center mb-4">
+        <Settings
+            mode={mode}
+            duration={duration}
+            onModeChange={onModeChange}
+            onDurationChange={onDurationChange}
+            className={`transition-opacity duration-300 ${showSettings ? 'opacity-100' : 'opacity-0'}`}
+        />
+        <TextDisplay
+            text={text}
+            currentWordIndex={currentWordIndex}
+            currentCharIndex={currentCharIndex}
+            typedText={typedText}
+        />
+        <TypingInput
+            ref={inputRef}
+            value={inputValue}
+            onChange={handleInputChange}
+            onSubmit={handleInputSubmit}
+            disabled={isFinished}
+        />
+        <div className="flex justify-between items-center mb-4">
+            <div className="w-1/4">
+                {!isFinished ? (
                     <Timer
                         mode={mode}
                         duration={duration}
@@ -103,44 +104,48 @@ const TypingTest: React.FC<TypingTestProps> = ({ mode, duration, onModeChange, o
                         wordsLeft={wordsLeft}
                         testStarted={timerStarted}
                     />
-
+                ) : (
+                    <button
+                        onClick={handleRestart}
+                        className="bg-primary text-background px-4 py-2 rounded w-full"
+                    >
+                        Restart
+                    </button>
+                )}
+            </div>
+            
+            {isFinished && (
+                <div className="w-1/2 text-center">
+                    <p className="text-3xl font-bold mb-2">WPM: {Math.round(wpm)}</p>
+                    <p className="text-3xl font-bold">Accuracy: {accuracy.toFixed(2)}%</p>
+                </div>
+            )}
+            
+            <div className="w-1/4 text-right">
+                {!isFinished ? (
                     <button
                         onClick={handleReset}
                         className="bg-primary text-background px-4 py-2 rounded font-bold"
                     >
                         Reset
                     </button>
-                </div>
-            )}
-            {isFinished && (
-                <div className="mt-4 flex flex-col items-center space-y-12">
-                    <div className="flex justify-center space-x-4">
-                        <button
-                            onClick={handleRestart}
-                            className="bg-primary text-background px-4 py-2 rounded"
-                        >
-                            Restart
-                        </button>
-                        <button
-                            onClick={handleNext}
-                            className="bg-primary text-background px-4 py-2 rounded"
-                        >
-                            Next Test
-                        </button>
-                    </div>
-                    <div className="text-center">
-                        <p className="text-3xl font-bold mb-2">WPM: {Math.round(wpm)}</p>
-                        <p className="text-3xl font-bold">Accuracy: {accuracy.toFixed(2)}%</p>
-                    </div>
-                </div>
-            )}
-            <Sidebar
-                isOpen={showSidebar}
-                onClose={() => setShowSidebar(false)}
-                primaryColor={primaryColor}
-                onColorChange={onColorChange}
-            />
+                ) : (
+                    <button
+                        onClick={handleNext}
+                        className="bg-primary text-background px-4 py-2 rounded w-full"
+                    >
+                        Next Test
+                    </button>
+                )}
+            </div>
         </div>
+        <Sidebar
+            isOpen={showSidebar}
+            onClose={() => setShowSidebar(false)}
+            primaryColor={primaryColor}
+            onColorChange={onColorChange}
+        />
+    </div>
     );
 };
 
